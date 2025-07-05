@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center px-4"
+    <div className="fixed top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-center px-4"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80')"
