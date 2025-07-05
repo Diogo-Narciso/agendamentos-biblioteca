@@ -1,82 +1,55 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Agendamentos() {
   const [agendamentos, setAgendamentos] = useState([]);
-  const [agendamentoSelecionado, setAgendamentoSelecionado] = useState(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("agendamentos");
-    if (stored) setAgendamentos(JSON.parse(stored));
+    const dados = JSON.parse(localStorage.getItem("agendamentos")) || [];
+    setAgendamentos(dados);
   }, []);
 
-  const removerAgendamento = () => {
-    const atualizado = agendamentos.filter((item) => item.id !== agendamentoSelecionado.id);
-    setAgendamentos(atualizado);
+  const excluirAgendamento = (id) => {
+    const atualizado = agendamentos.filter((item) => item.id !== id);
     localStorage.setItem("agendamentos", JSON.stringify(atualizado));
-    setAgendamentoSelecionado(null);
+    setAgendamentos(atualizado);
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-4">
-      <h2 className="text-2xl font-bold text-blue-600 mb-4">Meus Agendamentos</h2>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Meus Agendamentos</h2>
 
       {agendamentos.length === 0 ? (
         <p className="text-gray-500">Nenhum agendamento encontrado.</p>
       ) : (
-        <table className="w-full border-collapse bg-white shadow rounded">
-          <thead>
-            <tr className="bg-gray-100 text-left">
-              <th className="p-3">Nome</th>
-              <th className="p-3">Tipo de Visita</th>
-              <th className="p-3">Data</th>
-              <th className="p-3">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {agendamentos.map((item) => (
-              <tr key={item.id} className="border-t">
-                <td className="p-3">{item.nome}</td>
-                <td className="p-3">{item.tipoVisita}</td>
-                <td className="p-3">{item.data}</td>
-                <td className="p-3">
-                  <button
-                    title="Excluir agendamento"
-                    onClick={() => setAgendamentoSelecionado(item)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                  >
-                    Excluir
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-
-      {/* Modal de Confirmação */}
-      {agendamentoSelecionado && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800">
-              Tem certeza que deseja excluir o agendamento de{" "}
-              <span className="text-red-600">{agendamentoSelecionado.nome}</span>?
-            </h3>
-            <div className="flex justify-end gap-4">
-              <button
-                onClick={() => setAgendamentoSelecionado(null)}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={removerAgendamento}
-                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-              >
-                Confirmar
-              </button>
-            </div>
-          </div>
-        </div>
+        <ul className="space-y-4">
+          {agendamentos.map((item) => (
+            <li
+              key={item.id}
+              className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white"
+            >
+              <div className="mb-2">
+                <p><strong>Nome:</strong> {item.nome}</p>
+                <p><strong>Tipo de Visita:</strong> {item.tipoDeVisita}</p>
+                <p><strong>Data:</strong> {item.data}</p>
+              </div>
+              <div className="flex gap-4">
+                <Link
+                  to={`/agendar/${item.id}`}
+                  className="text-blue-600 hover:underline"
+                >
+                  Editar
+                </Link>
+                <button
+                  onClick={() => excluirAgendamento(item.id)}
+                  className="text-red-600 hover:underline"
+                >
+                  Excluir
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

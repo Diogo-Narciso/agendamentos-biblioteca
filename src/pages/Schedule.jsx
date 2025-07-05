@@ -1,112 +1,84 @@
-import React, { useState, useEffect } from "react";
-import ConfirmModal from "../components/ConfirmModal";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Schedule() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const [nome, setNome] = useState("");
-  const [tipoVisita, setTipoVisita] = useState("");
   const [data, setData] = useState("");
-  const [mensagem, setMensagem] = useState("");
-  const [erro, setErro] = useState("");
+  const [tipoDeVisita, setTipoDeVisita] = useState("");
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [agendamentoSelecionado, setAgendamentoSelecionado] = useState(null);
-
-  // 🚀 Estado inicial já carrega do localStorage
-  const [agendamentos, setAgendamentos] = useState(() => {
-    try {
-      const stored = localStorage.getItem("agendamentos");
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  // Salva no localStorage sempre que agendamentos mudar
   useEffect(() => {
-    if (Array.isArray(agendamentos)) {
-      localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
+    if (id) {
+      const agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+      const agendamento = agendamentos.find((item) => item.id === id);
+      if (agendamento) {
+        setNome(agendamento.nome);
+        setData(agendamento.data);
+        setTipoDeVisita(agendamento.tipoDeVisita);
+      }
     }
-  }, [agendamentos]);
+  }, [id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!nome.trim() || !tipoVisita.trim() || !data.trim()) {
-      setMensagem("");
-      setErro("Por favor, preencha todos os campos.");
-      return;
-    }
-
-    const novo = {
-      id: Date.now(),
+    const novoAgendamento = {
+      id: id || Date.now().toString(),
       nome,
-      tipoVisita,
       data,
+      tipoDeVisita,
     };
 
-    setAgendamentos((prev) => [...prev, novo]);
-    setNome("");
-    setTipoVisita("");
-    setData("");
-    setErro("");
-    setMensagem("✅ Agendamento realizado com sucesso!");
-    setTimeout(() => setMensagem(""), 3000);
-  };
+    const agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
 
-  const handleTextoSemNumeros = (valor) => valor.replace(/[0-9]/g, "");
+    const atualizados = id
+      ? agendamentos.map((item) =>
+          item.id === id ? novoAgendamento : item
+        )
+      : [...agendamentos, novoAgendamento];
 
-  const abrirModal = (id) => {
-    setAgendamentoSelecionado(id);
-    setModalOpen(true);
-  };
-
-  const confirmarExclusao = () => {
-    setAgendamentos((prev) =>
-      prev.filter((item) => item.id !== agendamentoSelecionado)
-    );
-    setModalOpen(false);
-    setMensagem("Agendamento excluído com sucesso!");
-    setTimeout(() => setMensagem(""), 3000);
+    localStorage.setItem("agendamentos", JSON.stringify(atualizados));
+    navigate("/agendamentos");
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-8 p-4">
-      <h2 className="text-2xl font-bold text-blue-600 mb-4">Agendar Visita à Biblioteca</h2>
-
-      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-4 shadow rounded">
-        {erro && <p className="text-red-600">{erro}</p>}
-        {mensagem && <p className="text-green-600">{mensagem}</p>}
-
+    <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md">
+      <h2 className="text-2xl font-bold mb-4">
+        {id ? "Editar Agendamento" : "Novo Agendamento"}
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Nome</label>
+          <label className="block mb-1 font-medium">Nome</label>
           <input
             type="text"
-            className="w-full border border-gray-300 rounded p-2"
             value={nome}
-            onChange={(e) => setNome(handleTextoSemNumeros(e.target.value))}
+            onChange={(e) => setNome(e.target.value)}
             required
+            className="w-full border border-gray-300 rounded px-3 py-2"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Tipo de Visita</label>
-          <input
-            type="text"
-            className="w-full border border-gray-300 rounded p-2"
-            value={tipoVisita}
-            onChange={(e) => setTipoVisita(handleTextoSemNumeros(e.target.value))}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Data</label>
+          <label className="block mb-1 font-medium">Data</label>
           <input
             type="date"
-            className="w-full border border-gray-300 rounded p-2"
             value={data}
             onChange={(e) => setData(e.target.value)}
             required
+            className="w-full border border-gray-300 rounded px-3 py-2"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 font-medium">Tipo de Visita</label>
+          <input
+            type="text"
+            value={tipoDeVisita}
+            onChange={(e) => setTipoDeVisita(e.target.value)}
+            required
+            className="w-full border border-gray-300 rounded px-3 py-2"
           />
         </div>
 
@@ -114,38 +86,9 @@ export default function Schedule() {
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
-          Agendar
+          {id ? "Salvar Alterações" : "Agendar"}
         </button>
       </form>
-
-      <h3 className="text-xl font-semibold mt-8 mb-2 text-blue-600">Agendamentos</h3>
-      {agendamentos.length === 0 ? (
-        <p className="text-gray-500">Nenhum agendamento registrado.</p>
-      ) : (
-        <ul className="space-y-2">
-          {agendamentos.map((item) => (
-            <li key={item.id} className="border p-2 rounded shadow-sm space-y-1">
-              <p><strong>Nome:</strong> {item.nome}</p>
-              <p><strong>Tipo de Visita:</strong> {item.tipoVisita}</p>
-              <p><strong>Data:</strong> {item.data}</p>
-              <button
-                onClick={() => abrirModal(item.id)}
-                className="mt-2 text-sm text-red-600 hover:underline"
-                title="Excluir este agendamento"
-              >
-                Excluir
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <ConfirmModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onConfirm={confirmarExclusao}
-        message="Tem certeza que deseja excluir este agendamento?"
-      />
     </div>
   );
 }

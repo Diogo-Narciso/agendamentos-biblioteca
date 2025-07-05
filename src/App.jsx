@@ -16,6 +16,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/autores" element={<Autores />} />
           <Route path="/agendamentos" element={<Agendamentos />} />
+          <Route path="/agendar/:id" element={<Schedule />} />
           <Route path="/agenda" element={<Schedule />} />
           <Route path="/agendar" element={<Schedule />} />
           <Route path="/obras/:idAutor" element={<Works />} /> {/* NOVA ROTA */}
