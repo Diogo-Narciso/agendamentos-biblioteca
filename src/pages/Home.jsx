@@ -37,8 +37,8 @@ export default function Home() {
             to="/agenda"
             className="bg-white text-blue-700 px-6 py-4 rounded-lg shadow-lg hover:bg-blue-100 transition w-full md:w-1/3"
           >
-            <h2 className="text-xl font-bold">Agenda</h2>
-            <p className="text-sm">Acompanhe a agenda dos dias disponíveis.</p>
+            <h2 className="text-xl font-bold">Agendar</h2>
+            <p className="text-sm">Faça seu agendamento aqui.</p>
           </Link>
         </div>
       </div>
