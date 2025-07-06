@@ -41,13 +41,6 @@ export default function Home() {
             <p className="text-sm">Acompanhe a agenda dos dias disponíveis.</p>
           </Link>
         </div>
-
-        <Link
-          to="/agendar"
-          className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded"
-        >
-          Fazer um agendamento
-        </Link>
       </div>
     </div>
   );
