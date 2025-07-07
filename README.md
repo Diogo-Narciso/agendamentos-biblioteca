@@ -6,24 +6,109 @@ Aplicação web feita em React que permite visualizar autores, agendar visitas �
 
 ## 🚀 Funcionalidades
 
-- Visualização de autores com consumo de API externa (Open Library)
-- Busca por autores com filtro local
-- Visualização de obras por autor
-- Formulário de agendamento com validação e persistência no `localStorage`
-- Edição e exclusão de agendamentos com modal de confirmação
-- Feedback visual em caso de erro, sucesso ou campos não preenchidos
-- Design responsivo
-- Página de erro 404 para rotas inválidas
-- Tooltip nos botões para melhor usabilidade
+- ✅ Página inicial com boas-vindas e links de navegação
+- ✅ Página de serviços com listagem dinâmica via API externa
+- ✅ Formulário de agendamento com validações e feedback visual
+- ✅ Listagem de agendamentos realizados
+- ✅ Armazenamento dos dados localmente (localStorage)
+- ✅ Navegação entre páginas com React Router
 
 ---
 
-## 🧩 Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
-- React (com Vite)
-- React Router DOM
-- Tailwind CSS
-- API pública da Open Library: `https://openlibrary.org/search/authors.json?q=a`
+| Tecnologia       | Versão Usada      |
+|------------------|-------------------|
+| Node.js          | `v20.19.3`        |
+| npm              | `v10.5.2`         |
+| React            | `v18.x`           |
+| Vite             | `v7.0.0`          |
+| Tailwind CSS     | `v4.1.11`         |
+| PostCSS          | `v8.5.6`          |
+| React Router DOM | `v6.x`            |
+
+---
+
+## ⚙️ Pré-requisitos
+
+Antes de rodar este projeto, certifique-se de ter instalado em sua máquina:
+
+- Node.js (https://nodejs.org)
+- npm (gerenciador de pacotes que já vem com o Node.js)
+- Editor de código (recomenda-se VS Code)
+
+### Verificando versões:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## 📦 Como rodar o projeto localmente
+
+1. **Clone o repositório** ou crie o projeto com Vite:
+
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd mvp-puc-front-end
+```
+
+2. **Instale as dependências:**
+```bash
+npm install
+```
+
+3. **Inicie o servidor de desenvolvimento:**
+```bash
+npm run dev
+```
+
+4. **Acesse no navegador:**
+```
+http://localhost:5173
+```
+
+---
+
+## 🌐 Rotas da Aplicação
+
+| Caminho           | Descrição                           |
+|-------------------|-------------------------------------|
+| `/`               | Página inicial                      |
+| `/servicos`       | Listagem de serviços disponíveis    |
+| `/agendar`        | Formulário para novo agendamento    |
+| `/agendamentos`   | Listagem de agendamentos salvos     |
+
+---
+
+## 🗂️ Estrutura de Pastas
+
+```
+src/
+│
+├── components/
+│   ├── Header.jsx
+│   ├── Footer.jsx
+│   └── ServiceCard.jsx
+│
+├── pages/
+│   ├── Home.jsx
+│   ├── Services.jsx
+│   ├── Schedule.jsx
+│   └── Agendamentos.jsx
+│
+├── App.jsx
+├── main.jsx
+└── index.css
+```
+
+---
+
+## 💾 Armazenamento
+
+Os dados de agendamento são armazenados no **localStorage** do navegador. Em uma versão futura, poderá ser conectado a uma API real com banco de dados.
 
 ---
 
