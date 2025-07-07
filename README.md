@@ -122,9 +122,3 @@ Os dados de agendamento são armazenados no **localStorage** do navegador. Em um
 
 ---
 
-## 🧪 Como executar o projeto
-
-### 1. Clonar o repositório
-
-```bash
-git clone https://github.com/Diogo-Narciso/agendamento-biblioteca.git
