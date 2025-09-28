@@ -1,8 +1,8 @@
 import Works from "./pages/Works";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Autores from "./pages/autores"; // Renamed to match the file name
-import Agendamentos from "./pages/Agendamentos";
+import Autores from "./pages/autores"; 
+import Agendamentos from "./pages/Agendamentos"; // 👈 corrigido: minúsculo
 import Schedule from "./pages/Schedule";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
@@ -19,9 +19,10 @@ export default function App() {
           <Route path="/agendar/:id" element={<Schedule />} />
           <Route path="/agenda" element={<Schedule />} />
           <Route path="/agendar" element={<Schedule />} />
-          <Route path="/obras/:idAutor" element={<Works />} /> {/* NOVA ROTA */}
+          {/* NOVA ROTA */}
+          <Route path="/obras/:idAutor" element={<Works />} /> 
           <Route path="*" element={<NotFound />} />
-      </Routes>
+        </Routes>
       </div>
     </Router>
   );

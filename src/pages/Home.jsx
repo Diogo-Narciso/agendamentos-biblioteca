@@ -22,7 +22,7 @@ export default function Home() {
             className="bg-white text-blue-700 px-6 py-4 rounded-lg shadow-lg hover:bg-blue-100 transition w-full md:w-1/3"
           >
             <h2 className="text-xl font-bold">Acervo de autores</h2>
-            <p className="text-sm">Visualize os autores disponíveis na biblioteca.</p>
+            <p className="text-sm">Visualize os autores cadastrados no sistema.</p>
           </Link>
 
           <Link
@@ -30,11 +30,11 @@ export default function Home() {
             className="bg-white text-blue-700 px-6 py-4 rounded-lg shadow-lg hover:bg-blue-100 transition w-full md:w-1/3"
           >
             <h2 className="text-xl font-bold">Agendamentos</h2>
-            <p className="text-sm">Veja, edite ou exclua seus agendamentos ativos.</p>
+            <p className="text-sm">Veja e exclua seus agendamentos.</p>
           </Link>
 
           <Link
-            to="/agenda"
+            to="/agendar"
             className="bg-white text-blue-700 px-6 py-4 rounded-lg shadow-lg hover:bg-blue-100 transition w-full md:w-1/3"
           >
             <h2 className="text-xl font-bold">Agendar</h2>
