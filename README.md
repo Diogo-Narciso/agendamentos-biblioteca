@@ -1,124 +1,119 @@
-# 📚 Agendamentos de Visitas à Biblioteca
+# 📚 MVP Front-end - Agendamentos de Visitas à Biblioteca
 
-Aplicação web feita em React que permite visualizar autores, agendar visitas à biblioteca e gerenciar esses agendamentos com persistência no `localStorage`. A aplicação consome uma API pública de autores e demonstra boas práticas de componentização, roteamento e usabilidade.
-
----
-
-## 🚀 Funcionalidades
-
-- ✅ Página inicial com boas-vindas e links de navegação
-- ✅ Página de serviços com listagem dinâmica via API externa
-- ✅ Formulário de agendamento com validações e feedback visual
-- ✅ Listagem de agendamentos realizados
-- ✅ Armazenamento dos dados localmente (localStorage)
-- ✅ Navegação entre páginas com React Router
+Este é o front-end do MVP desenvolvido em **React (Vite)**, responsável por consumir a API em Flask/Postgres e permitir a interação com autores e agendamentos de visitas à biblioteca.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Tecnologias utilizadas
+- **React 18** com **Vite**
+- **React Router DOM** (navegação SPA)
+- **Tailwind CSS** (estilização)
+- **Fetch API** (consumo da API backend)
+- **Docker (backend e banco)**
 
-| Tecnologia       | Versão Usada      |
-|------------------|-------------------|
-| Node.js          | `v20.19.3`        |
-| npm              | `v10.5.2`         |
-| React            | `v18.x`           |
-| Vite             | `v7.0.0`          |
-| Tailwind CSS     | `v4.1.11`         |
-| PostCSS          | `v8.5.6`          |
-| React Router DOM | `v6.x`            |
+---
+
+## 📂 Estrutura do projeto
+
+```
+src/
+ ├── components/        # Componentes reutilizáveis
+ │    ├── Header.jsx
+ │    ├── Footer.jsx
+ │    └── ConfirmModal.jsx
+ │
+ ├── pages/             # Páginas da aplicação
+ │    ├── Home.jsx
+ │    ├── Autores.jsx
+ │    ├── Agendamentos.jsx
+ │    ├── Schedule.jsx
+ │    ├── Works.jsx
+ │    └── NotFound.jsx
+ │
+ ├── services/          # Serviços (API)
+ │    └── api.js
+ │
+ ├── App.jsx            # Configuração de rotas
+ ├── main.jsx           # Entry point
+ └── index.css          # Estilos globais
+```
 
 ---
 
 ## ⚙️ Pré-requisitos
 
-Antes de rodar este projeto, certifique-se de ter instalado em sua máquina:
-
-- Node.js (https://nodejs.org)
-- npm (gerenciador de pacotes que já vem com o Node.js)
-- Editor de código (recomenda-se VS Code)
-
-### Verificando versões:
-
-```bash
-node -v
-npm -v
-```
+Antes de rodar o projeto, certifique-se de ter:
+- [Node.js 20+](https://nodejs.org/)
+- [NPM](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
+- Backend rodando em `http://localhost:5000`
 
 ---
 
-## 📦 Como rodar o projeto localmente
+## ▶️ Como rodar o projeto
 
-1. **Clone o repositório** ou crie o projeto com Vite:
+1. Clone este repositório:
+   ```bash
+   git clone https://github.com/seuusuario/mvp-puc-front-end.git
+   cd mvp-puc-front-end
+   ```
 
-```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd mvp-puc-front-end
-```
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+   ou
+   ```bash
+   yarn install
+   ```
 
-2. **Instale as dependências:**
-```bash
-npm install
-```
-
-3. **Inicie o servidor de desenvolvimento:**
-```bash
-npm run dev
-```
-
-4. **Acesse no navegador:**
-```
-http://localhost:5173
-```
-
----
-
-## 🌐 Rotas da Aplicação
-
-| Caminho           | Descrição                           |
-|-------------------|-------------------------------------|
-| `/`               | Página inicial                      |
-| `/servicos`       | Listagem de serviços disponíveis    |
-| `/agendar`        | Formulário para novo agendamento    |
-| `/agendamentos`   | Listagem de agendamentos salvos     |
+3. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+   O front ficará disponível em: **http://localhost:5173**
 
 ---
 
-## 🗂️ Estrutura de Pastas
+## 🔗 Rotas disponíveis (Front)
 
-```
-src/
-│
-├── components/
-│   ├── Header.jsx
-│   ├── Footer.jsx
-│   └── ServiceCard.jsx
-│
-├── pages/
-│   ├── Home.jsx
-│   ├── Services.jsx
-│   ├── Schedule.jsx
-│   └── Agendamentos.jsx
-│
-├── App.jsx
-├── main.jsx
-└── index.css
-```
+- `/` → **Home**
+- `/autores` → Lista de autores (vindos do banco via API)
+- `/agendamentos` → Lista de agendamentos feitos
+- `/agendar` → Criar novo agendamento
+- `/obras/:idAutor` → Visualizar obras de um autor
+- `*` → Página de erro (NotFound)
 
 ---
 
-## 💾 Armazenamento
+## 📡 Integração com o backend
 
-Os dados de agendamento são armazenados no **localStorage** do navegador. Em uma versão futura, poderá ser conectado a uma API real com banco de dados.
-
----
-
-## 🌐 API Externa
-
-- **Nome**: Open Library API  
-- **Licença**: Open Data (sem necessidade de API Key)  
-- **Rotas utilizadas**:
-  - `https://openlibrary.org/search/authors.json?q=a` – Listagem de autores
-  - `https://openlibrary.org/authors/:id/works.json` – Obras do autor
+- O backend deve estar rodando em `http://localhost:5000`
+- Arquivo `src/services/api.js` centraliza os endpoints:
+  ```js
+  const API_BASE = "http://localhost:5000/api";
+  ```
 
 ---
 
+## ✅ Funcionalidades implementadas
+
+- [x] Listagem de **autores** via API
+- [x] Listagem de **agendamentos**
+- [x] Exclusão de agendamento
+- [x] Criação de novo agendamento
+- [x] Consumo **100% integrado ao backend**
+
+---
+
+## 📌 Observações
+
+- O projeto é um **MVP acadêmico** e pode ser expandido no futuro.
+- Caso queira rodar em produção, configure o build:
+  ```bash
+  npm run build
+  npm run preview
+  ```
+
+---
+
+✍️ Desenvolvido como parte do MVP Fullstack (PUC)

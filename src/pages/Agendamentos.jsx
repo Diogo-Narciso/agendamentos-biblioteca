@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export default function Agendamentos() {
   const [agendamentos, setAgendamentos] = useState([]);
   const [carregando, setCarregando] = useState(true);
-  const [erro, setErro] = useState("");
+  const [mensagem, setMensagem] = useState("");
 
   // Buscar lista de agendamentos
   const fetchAgendamentos = async () => {
@@ -15,10 +15,10 @@ export default function Agendamentos() {
 
       const data = await response.json();
       setAgendamentos(data);
-      setErro("");
+      setMensagem("");
     } catch (err) {
       console.error(err);
-      setErro("❌ Não foi possível carregar os agendamentos.");
+      setMensagem("❌ Não foi possível carregar os agendamentos.");
     } finally {
       setCarregando(false);
     }
@@ -35,13 +35,14 @@ export default function Agendamentos() {
 
       if (response.ok) {
         setAgendamentos((prev) => prev.filter((item) => item.id !== id));
+        setMensagem("✅ Agendamento excluído com sucesso.");
       } else {
         const err = await response.json();
-        alert(`Erro: ${err.error || "Não foi possível excluir"}`);
+        setMensagem(`❌ Erro: ${err.error || "Não foi possível excluir"}`);
       }
     } catch (error) {
       console.error(error);
-      alert("❌ Erro de conexão com o servidor.");
+      setMensagem("❌ Erro de conexão com o servidor.");
     }
   };
 
@@ -50,13 +51,23 @@ export default function Agendamentos() {
   }, []);
 
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">Meus Agendamentos</h2>
 
+      {/* Mensagem de feedback */}
+      {mensagem && (
+        <div
+          className={`mb-4 p-3 rounded ${
+            mensagem.startsWith("✅") ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+          }`}
+        >
+          {mensagem}
+        </div>
+      )}
+
+      {/* Estado de carregamento */}
       {carregando ? (
-        <p>Carregando agendamentos...</p>
-      ) : erro ? (
-        <p className="text-red-600">{erro}</p>
+        <p className="text-gray-600 italic">Carregando agendamentos...</p>
       ) : agendamentos.length === 0 ? (
         <p className="text-gray-500">Nenhum agendamento encontrado.</p>
       ) : (
@@ -64,17 +75,19 @@ export default function Agendamentos() {
           {agendamentos.map((item) => (
             <li
               key={item.id}
-              className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white"
+              className="border border-gray-300 rounded-lg p-4 shadow bg-white"
             >
-              <div className="mb-2">
-                <p><strong>Nome:</strong> {item.nome}</p>
-                <p><strong>Email:</strong> {item.email}</p>
-                <p><strong>Data da visita:</strong> {new Date(item.data_visita).toLocaleDateString("pt-BR")}</p>
-                <p><strong>Assunto:</strong> {item.assunto || "Não informado"}</p>
-              </div>
+              <p><strong>Nome:</strong> {item.nome}</p>
+              <p><strong>Email:</strong> {item.email}</p>
+              <p>
+                <strong>Data da visita:</strong>{" "}
+                {new Date(item.data_visita).toLocaleDateString("pt-BR")}
+              </p>
+              <p><strong>Assunto:</strong> {item.assunto || "Não informado"}</p>
+
               <button
                 onClick={() => excluirAgendamento(item.id)}
-                className="text-red-600 hover:underline"
+                className="mt-3 text-red-600 hover:underline"
               >
                 Excluir
               </button>
